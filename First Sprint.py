@@ -142,5 +142,65 @@ def delete_room(room_id):
     conn.close()
     return jsonify({"message": "Room deleted!"}), 200
 
+# Route for getting all residents
+@app.route('/api/residents', methods=['GET'])
+def get_all_residents():
+    connection = connect_to_database()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM resident")
+    result = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(result)
+
+# Route for adding a new resident
+@app.route('/api/residents', methods=['POST'])
+def add_resident():
+    data = request.json
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    insert_query = "INSERT INTO resident (firstname, lastname, age, room_id) VALUES (%s, %s, %s, %s)"
+    cursor.execute(insert_query, (data["firstname"], data["lastname"], data["age"], data["room_id"]))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Resident added!"}), 201
+
+# Route for updating a resident
+@app.route('/api/residents/<int:resident_id>', methods=['PUT'])
+def update_resident(resident_id):
+    data = request.json
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    update_query = "UPDATE resident SET firstname=%s, lastname=%s, age=%s, room_id=%s WHERE id=%s"
+    cursor.execute(update_query, (data["firstname"], data["lastname"], data["age"], data["room_id"], resident_id))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Resident updated!"})
+
+# Route for deleting a resident
+@app.route('/api/residents/<int:resident_id>', methods=['DELETE'])
+def delete_resident(resident_id):
+    conn = connect_to_database()
+    cursor = conn.cursor()
+
+    delete_query = "DELETE FROM resident WHERE id = %s"
+    cursor.execute(delete_query, (resident_id,))
+
+    if cursor.rowcount == 0:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "No Resident found"}), 404
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return jsonify({"message": "Resident deleted!"}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
