@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head.ejs') %>
+    <title>Floors</title>
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <h2>Floors</h2>
+    <ul>
+        <% floors.forEach(function(floor) { %>
+            <li>
+                Floor Level: <%= floor.level %>, Name: <%= floor.name %>
+                <!-- Add buttons or links for update and delete operations here -->
+            </li>
+        <% }); %>
+    </ul>
+
+    <!-- Form for adding a new floor -->
+    <form action="/add-floor" method="post">
+        <input type="number" name="level" placeholder="Floor Level" required>
+        <input type="text" name="name" placeholder="Floor Name" required>
+        <button type="submit">Add Floor</button>
+    </form>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>
