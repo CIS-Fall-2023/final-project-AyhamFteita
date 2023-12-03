@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head.ejs') %>
+    <title>Rooms</title>
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <h2>Rooms</h2>
+    <ul>
+        <% rooms.forEach(function(room) { %>
+            <li>
+                Room Number: <%= room.number %>, Capacity: <%= room.capacity %>, Floor ID: <%= room.floor_id %>
+
+            </li>
+        <% }); %>
+    </ul>
+
+    <!-- Form for adding a new room -->
+    <form action="/api/room" method="post">
+        <input type="number" name="number" placeholder="Room Number" required>
+        <input type="number" name="capacity" placeholder="Capacity" required>
+        <input type="number" name="floor_id" placeholder="Floor ID" required>
+        <button type="submit">Add Room</button>
+    </form>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>
