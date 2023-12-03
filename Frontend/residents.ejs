@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/head.ejs') %>
+    <title>Residents</title>
+</head>
+<body>
+    <%- include('../partials/header.ejs') %>
+
+    <h2>Residents</h2>
+    <ul>
+        <% residents.forEach(function(resident) { %>
+            <li>
+                Name: <%= resident.firstname %> <%= resident.lastname %>, Age: <%= resident.age %>, Room ID: <%= resident.room_id %>
+
+            </li>
+        <% }); %>
+    </ul>
+
+    <!-- Form for adding a new resident -->
+    <form action="/api/resident" method="post">
+        <input type="text" name="firstname" placeholder="First Name" required>
+        <input type="text" name="lastname" placeholder="Last Name" required>
+        <input type="number" name="age" placeholder="Age" required>
+        <input type="number" name="room_id" placeholder="Room ID" required>
+        <button type="submit">Add Resident</button>
+    </form>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+</html>
